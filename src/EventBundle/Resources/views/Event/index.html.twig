@@ -1,0 +1,54 @@
+{% extends 'EventBundle::layout.html.twig' %}
+
+{% block page_title %}{{ 'head'|trans({}, 'event') }} | {{ 'list.title'|trans({}, 'event') }}{% endblock %}
+
+{% block content %}    
+    <div class="row">        
+        {{ form_start(search_form) }}
+        {{ form_widget(search_form) }}
+        {{ form_end(search_form) }}
+    </div>
+    <div class="row">
+        {% if events is defined and events|length > 0 %}
+            <table class="table table-striped"> 
+                <thead> 
+                    <tr> 
+                        <th>#</th> 
+                        <th>Nazwa</th> 
+                        <th>Adres</th> 
+                        <th></th> 
+                    </tr> 
+                </thead> 
+                <tbody> 
+                    {% for event in events %}
+                        <tr> 
+                            <th scope="row">{{ loop.index }}</th> 
+                            <td>{{ event.name }}</td> 
+                            <td>{{ event.address }}{% if event.distance is defined %} (odległość od wskazanej lokalizacji to {{ event.distance|number_format(2, '.', '') }} km.){% endif %}</td> 
+                            <td><a class="btn btn-link" href="{{ url('event_view', {'id': event.id}) }}">Szczegóły</a></td> 
+                        </tr>            
+                    {% endfor %}
+                </tbody> 
+            </table>
+        {% else %}
+            {{ 'list.empty'|trans({}, 'event') }}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block head_stylesheet %}
+    <link href="{{ asset('/vendor/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block end_scripts %}
+    <script src="{{ asset('/vendor/select2/dist/js/select2.full.js') }}"></script>
+    <script>        
+        $(function() {
+            var _addresses = {{ addresses|raw }};
+            
+            $('#event_search_address').select2({
+                data: _addresses,
+            });
+        });
+    </script>
+{% endblock %}

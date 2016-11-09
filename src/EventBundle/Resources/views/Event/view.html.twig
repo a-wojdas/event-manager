@@ -1,0 +1,81 @@
+{% extends 'EventBundle::layout.html.twig' %}
+
+{% block page_title %}{{ 'head'|trans({}, 'event') }} | {{ 'view.title'|trans({}, 'event')|replace('%name%', entity.name) }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th>#</th><td>{{ entity.id }}</td>
+                </tr>
+                <tr>
+                    <th>Nazwa</th> <td> {{ entity.name }} </td>
+                </tr>
+                <tr>
+                    <th>Adres</th> <td> {{ entity.address }} </td>
+                </tr>
+                <tr>
+                    <th colspan="2">Mapa<br />
+                        <div id="event_map" style="width: 100%; height: 400px;"></div>
+                    </th>
+            </tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <strong>Dodaj komentarz</strong>
+
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+
+    <br />
+    <br />
+
+    <div class="row">
+        <strong>Komentarze:</strong>
+
+        {% if entity.comments is defined and entity.comments|length > 0 %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Komentarz</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for comment in entity.comments %}
+                        <tr>
+                            <th scope="row" valign="top">{{ loop.index }}</th>
+                            <td>{{ comment.description }}<br />
+                                {{ comment.email }}</td>
+                            <td><a class="btn btn-link" href="{{ url('event_comment_remove', {'id': comment.id}) }}" onclick="return confirm('{{ 'list.comment.removeConfirm'|trans({}, 'event') }}');">Usuń</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            {{ 'list.comment.empty'|trans({}, 'event') }}
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block end_scripts %}
+    <script>
+        function initMap() {
+            var mapDiv = document.getElementById('event_map');
+            var map = new google.maps.Map(mapDiv, {
+                center: {lat:{{ entity.location.latitude }}, lng:{{ entity.location.longitude }}},
+                zoom: 14
+            });
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB69X01alm8iRoEmsMzP5e1BpyDzSOXo8c&callback=initMap">
+    </script>
+{% endblock %}

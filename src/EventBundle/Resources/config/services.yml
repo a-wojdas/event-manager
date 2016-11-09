@@ -1,0 +1,21 @@
+services:
+    
+    event.mailer:
+        class: EventBundle\Factory\Mailer        
+        arguments: 
+            mailer: "@mailer"
+            logger: "@logger"
+    
+    event.events_factory:
+        class: EventBundle\Factory\Events        
+        arguments: 
+            entityManager: "@doctrine.orm.entity_manager"
+            logger: "@logger"
+    
+    event.addresses_factory:
+        class: EventBundle\Factory\Addresses    
+        calls:
+            - [ setContainer, ["@service_container"] ]    
+        arguments: 
+            entityManager: "@doctrine.orm.entity_manager"
+            logger: "@logger"

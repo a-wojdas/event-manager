@@ -1,0 +1,27 @@
+head: 'Imprezy'
+add: 'Dodaj imprezę'
+
+create:
+    title: 'Dodanie nowej imprezy'
+    ok: 'Dodano imprezę'
+    error01: 'Nie udało się dodać imprezy!'
+    
+    comment:
+        ok: 'Dodano komentarz do imprezy'
+        error01: 'Nie udało się dodać komentarza do imprezy'
+
+list:
+    title: 'Lista imprez'
+    empty: 'Brak imprez'
+    
+    comment:
+        empty: 'Brak komentarzy'
+        removeConfirm: 'Czy napewno usunąć komentarz imprezy ?'
+    
+view:
+    title: 'Podgląd imprezy "%name%".'
+    
+remove:
+    comment:
+        ok: 'Usunięto komentarz imprezy'
+        error01: 'Nie udało się usunąć komentarza imprezy'

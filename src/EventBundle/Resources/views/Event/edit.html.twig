@@ -1,0 +1,43 @@
+{% extends 'EventBundle::layout.html.twig' %}
+
+{% block page_title %}{{ 'head'|trans({}, 'event') }} | {{ (action ~ '.title')|trans({}, 'event') }}{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block end_scripts %}
+    <script>
+
+        // This example requires the Places library. Include the libraries=places
+        // parameter when you first load the API. For example:
+        // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+        var autocomplete;
+
+        function initAutocomplete() {
+          // Create the autocomplete object, restricting the search to geographical
+          // location types.
+          autocomplete = new google.maps.places.Autocomplete(
+              /** @type {!HTMLInputElement} */(document.getElementById('event_address')),
+              {types: ['geocode']});
+
+          // When the user selects an address from the dropdown, populate the address
+          // fields in the form.
+          autocomplete.addListener('place_changed', addressChanged);
+        }
+
+        function addressChanged() {
+          // Get the place details from the autocomplete object.
+          var place = autocomplete.getPlace();
+          
+          $('#event_latitude').val(place.geometry.location.lat());
+          $('#event_longitude').val(place.geometry.location.lng());
+        }
+      </script>
+      
+      <script src="//maps.googleapis.com/maps/api/js?language=pl&key=AIzaSyB69X01alm8iRoEmsMzP5e1BpyDzSOXo8c&libraries=places&callback=initAutocomplete"
+          async defer></script>
+{% endblock %}
