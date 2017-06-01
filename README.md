@@ -1,4 +1,4 @@
 .
+Fragment kodu przygotowany w celu prezentacji kodu, który chciałbym tworzyć gdybym miał do tego warunki.
 =
-
-A Symfony project created on August 26, 2016, 6:49 am.
+src/EventBundle/
